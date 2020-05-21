@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
     CropImage.activity()
         .setGuidelines(CropImageView.Guidelines.ON)
         .setActivityTitle("My Crop")
-        .setCropShape(CropImageView.CropShape.OVAL)
+        .setCropShape(CropImageView.CropShape.RECTANGLE)
         .setCropMenuCropButtonTitle("Done")
-        .setRequestedSize(400, 400)
         .setCropMenuCropButtonIcon(R.drawable.ic_launcher)
+        .setAsBoundingBoxSelector()
         .start(this);
   }
 
@@ -55,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
             .show();
       } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
         Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+      }
+    } else if (requestCode == CropImage.BOUNDING_IMAGE_ACTIVITY_REQUEST_CODE) {
+      if (resultCode == RESULT_OK) {
+        float[] result = data.getFloatArrayExtra("rect");
+        System.out.println("left" + result[0]);
+        System.out.println("top" + result[1]);
+        System.out.println("right" + result[4]);
+        System.out.println("bottom" + result[5]);
       }
     }
   }

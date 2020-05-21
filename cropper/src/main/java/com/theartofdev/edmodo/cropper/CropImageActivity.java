@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -262,6 +263,11 @@ public class CropImageActivity extends AppCompatActivity
   protected void cropImage() {
     if (mOptions.noOutputImage) {
       setResult(null, null, 1);
+    } else if(mOptions.boundingBox) {
+      Intent returnIntent = new Intent();
+      returnIntent.putExtra("rect", mCropImageView.getCropPoints());
+      setResult(RESULT_OK, returnIntent);
+      finish();
     } else {
       Uri outputUri = getOutputUri();
       mCropImageView.saveCroppedImageAsync(

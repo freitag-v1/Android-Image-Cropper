@@ -93,6 +93,8 @@ public final class CropImage {
 
   /** The result code used to return error from {@link CropImageActivity}. */
   public static final int CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE = 204;
+
+  public static final int BOUNDING_IMAGE_ACTIVITY_REQUEST_CODE = 205;
   // endregion
 
   private CropImage() {}
@@ -484,7 +486,11 @@ public final class CropImage {
      */
     public void start(@NonNull Activity activity) {
       mOptions.validate();
-      activity.startActivityForResult(getIntent(activity), CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+      if(mOptions.boundingBox) {
+        activity.startActivityForResult(getIntent(activity), BOUNDING_IMAGE_ACTIVITY_REQUEST_CODE);
+      } else {
+        activity.startActivityForResult(getIntent(activity), CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+      }
     }
 
     /**
@@ -938,6 +944,14 @@ public final class CropImage {
      */
     public ActivityBuilder setCropMenuCropButtonIcon(@DrawableRes int drawableResource) {
       mOptions.cropMenuCropButtonIcon = drawableResource;
+      return this;
+    }
+
+    public ActivityBuilder setAsBoundingBoxSelector() {
+      mOptions.boundingBox = true;
+      mOptions.allowRotation = false;
+      mOptions.allowCounterRotation = false;
+      mOptions.allowFlipping = false;
       return this;
     }
   }
